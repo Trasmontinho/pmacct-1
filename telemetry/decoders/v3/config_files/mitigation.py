@@ -378,15 +378,31 @@ def mod_hua_int_admin_and_oper_status_to_enum():
                             if "ifindex" in interface_list[idx]["state"]:
                                 if not interface_list[idx]["state"]["ifindex"] == 0:
                                     if "admin_status" in interface_list[idx]["state"]:
+                                       if interface_list[idx]["state"]["admin_status"] == 0:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["admin_status"] = "INVALID"
                                        if interface_list[idx]["state"]["admin_status"] == 1:
                                           mitigation["interfaces"]["interface"][idx]["state"]["admin_status"] = "UP"
                                        if interface_list[idx]["state"]["admin_status"] == 2:
                                           mitigation["interfaces"]["interface"][idx]["state"]["admin_status"] = "DOWN"
+                                       if interface_list[idx]["state"]["admin_status"] == 3:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["admin_status"] = "TESTING"
                                     if "oper_status" in interface_list[idx]["state"]:
+                                       if interface_list[idx]["state"]["oper_status"] == 0:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "INVALID"
                                        if interface_list[idx]["state"]["oper_status"] == 1:
                                           mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "UP"
                                        if interface_list[idx]["state"]["oper_status"] == 2:
                                           mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "DOWN"
+                                       if interface_list[idx]["state"]["oper_status"] == 3:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "TESTING"
+                                       if interface_list[idx]["state"]["oper_status"] == 4:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "UNKNOWN"
+                                       if interface_list[idx]["state"]["oper_status"] == 5:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "DORMANT"
+                                       if interface_list[idx]["state"]["oper_status"] == 6:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "NOT_PRESENT"
+                                       if interface_list[idx]["state"]["oper_status"] == 7:
+                                          mitigation["interfaces"]["interface"][idx]["state"]["oper_status"] = "LOWER_LAYER_DOWN"
 
 def mod_hua_subint_admin_and_oper_status_to_enum():
     if "encoding_path" in mitigation["collector"]["data"]:
@@ -405,15 +421,31 @@ def mod_hua_subint_admin_and_oper_status_to_enum():
                                         if "ifindex" in subinterface_list[subidx]["state"]:
                                             if not subinterface_list[subidx]["state"]["ifindex"] == 0:
                                                 if "admin_status" in subinterface_list[subidx]["state"]:
+                                                    if subinterface_list[subidx]["state"]["admin_status"] == 0:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["admin_status"] = "INVALID"
                                                     if subinterface_list[subidx]["state"]["admin_status"] == 1:
                                                        mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["admin_status"] = "UP"
                                                     if subinterface_list[subidx]["state"]["admin_status"] == 2:
                                                        mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["admin_status"] = "DOWN"
+                                                    if subinterface_list[subidx]["state"]["admin_status"] == 3:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["admin_status"] = "TESTING"
                                                 if "oper_status" in subinterface_list[subidx]["state"]:
+                                                    if subinterface_list[subidx]["state"]["oper_status"] == 0:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "INVALID"
                                                     if subinterface_list[subidx]["state"]["oper_status"] == 1:
                                                        mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "UP"
                                                     if subinterface_list[subidx]["state"]["oper_status"] == 2:
                                                        mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "DOWN"
+                                                    if subinterface_list[subidx]["state"]["oper_status"] == 3:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "TESTING"
+                                                    if subinterface_list[subidx]["state"]["oper_status"] == 4:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "UNKNOWN"
+                                                    if subinterface_list[subidx]["state"]["oper_status"] == 5:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "DORMANT"
+                                                    if subinterface_list[subidx]["state"]["oper_status"] == 6:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "NOT_PRESENT"
+                                                    if subinterface_list[subidx]["state"]["oper_status"] == 7:
+                                                       mitigation["interfaces"]["interface"][idx]["subinterfaces"]["subinterface"][subidx]["state"]["oper_status"] = "LOWER_LAYER_DOWN"
 
 
 def int_state_counters_2_integer():
