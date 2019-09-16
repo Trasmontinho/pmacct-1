@@ -110,8 +110,9 @@ def main():
     )
     #gnmi options
     parser.add_option(
+        "-g",
         "--gnmi_enable",
-        default=config.get("PMGRPCD", "gnmi_enable", fallback=False),
+        default=config.getboolean("PMGRPCD", "gnmi_enable", fallback=False),
         help="Boolean defining whether gnmi is enable (this disables the rest of collectrors)",
     )
     parser.add_option(
