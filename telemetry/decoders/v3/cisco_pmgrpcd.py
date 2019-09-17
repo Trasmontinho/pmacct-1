@@ -15,6 +15,7 @@ class gRPCMdtDialoutServicer(cisco_grpc_dialout_pb2_grpc.gRPCMdtDialoutServicer)
         PMGRPCDLOG.info("Cisco: Initializing gRPCMdtDialoutServicer()")
 
     def MdtDialout(self, msg_iterator, context):
+        grpcPeer = {}
         grpcPeerStr = context.peer()
         (
             grpcPeer["telemetry_proto"],
