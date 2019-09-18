@@ -1,12 +1,14 @@
 from lib_pmgrpcd import PMGRPCDLOG
 import cisco_grpc_dialout_pb2_grpc
-import cisco_telemetry_pb2
 from google.protobuf.json_format import MessageToDict
 import ujson as json
 import lib_pmgrpcd
 import time
 from export_pmgrpcd import FinalizeTelemetryData
 import base64
+
+if lib_pmgrpcd.OPTIONS.cenctype == 'gpbkv':
+    import cisco_telemetry_pb2
 
 
 
@@ -181,29 +183,35 @@ def find_encoding_and_decode(new_msg):
 
     # TODO. If options force one type, only try that one.
     # Maybe it is json
-    try:
-        grpc_message = json.loads(new_msg.data)
-        encoding_type = "ciscojson"
-    except Exception as e:
-        PMGRPCDLOG.debug(
-            "ERROR: Direct json parsing of grpc_message failed with message:\n%s\n", e
-        )
-    else:
-        return encoding_type, grpc_message
-
-    PMGRPCDLOG.debug("Try to unmarshall KV")
-
-    if encoding_type is None:
+    if lib_pmgrpcd.OPTIONS.cenctype == 'json':
+        PMGRPCDLOG.debug("Try to parse json")
         try:
-            grpc_message = process_cisco_kv(new_msg)
-            encoding_type = "ciscogrpckv"
+            grpc_message = json.loads(new_msg.data)
+            encoding_type = "ciscojson"
         except Exception as e:
             PMGRPCDLOG.debug(
-                "ERROR: Parsing of json after unmarshall KV failed with message:\n%s\n",
-                e,
+                "ERROR: Direct json parsing of grpc_message failed with message:\n%s\n", e
             )
         else:
             return encoding_type, grpc_message
+
+    elif lib_pmgrpcd.OPTIONS.cenctype == 'gpbkv':
+        PMGRPCDLOG.debug("Try to unmarshall KV")
+        if encoding_type is None:
+            try:
+                grpc_message = process_cisco_kv(new_msg)
+                encoding_type = "ciscogrpckv"
+            except Exception as e:
+                PMGRPCDLOG.debug(
+                    "ERROR: Parsing of json after unmarshall KV failed with message:\n%s\n",
+                    e,
+                )
+            else:
+                return encoding_type, grpc_message
+    
+    elif lib_pmgrpcd.OPTIONS.cenctype == 'gpbcomp':
+        PMGRPCDLOG.debug("Try to unmarshall compact mode")
+        PMGRPCDLOG.debug("TODO")
 
     encoding_type = "unknown"
     return encoding_type, grpc_message

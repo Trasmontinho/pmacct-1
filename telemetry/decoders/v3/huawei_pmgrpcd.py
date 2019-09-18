@@ -2,7 +2,6 @@ import huawei_grpc_dialout_pb2_grpc
 from lib_pmgrpcd import PMGRPCDLOG
 import ujson as json
 import lib_pmgrpcd
-import huawei_telemetry_pb2
 from google.protobuf.json_format import MessageToDict
 import time
 from datetime import datetime
@@ -13,6 +12,10 @@ import base64
 import huawei_ifm_pb2
 import huawei_devm_pb2
 import openconfig_interfaces_pb2
+
+if lib_pmgrpcd.OPTIONS.huawei and (not lib_pmgrpcd.OPTIONS.cenctype == 'gpbkv'):
+    import huawei_telemetry_pb2
+
 
 class gRPCDataserviceServicer(huawei_grpc_dialout_pb2_grpc.gRPCDataserviceServicer):
     def __init__(self):

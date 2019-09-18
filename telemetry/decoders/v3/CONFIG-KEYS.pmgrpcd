@@ -147,6 +147,14 @@ DESC:       Enable/disable processing of metrics produced by Huawei devices
 DEFAULT:    True
 EXAMPLE:    True
 -----------------------------------------------------------------
+KEY:        cenctype
+DESC:       cenctype is the type of encoding for cisco.
+            This is because some protofiles are incompatible.
+            With cenctype=gpbkv only cisco is enabled.
+            The encoding type can be json, gpbcomp, gpbkv
+DEFAULT:    json
+EXAMPLE:    json, gpbcomp, gpbkv
+-----------------------------------------------------------------
 KEY:        example
 DESC:       Enable/disable flag to produce example files for different
 	    network elements. If this flag is enabled example path files
@@ -161,6 +169,18 @@ KEY:        examplepath
 DESC:       The directory where example files will be produced to.
 DEFAULT:    /tmp/stexamples
 EXAMPLE:    /tmp/stexamples
+-----------------------------------------------------------------
+KEY:        jsondatafile
+DESC:       This ioption is to serialize manually with avscid and
+            jsondatafile (for development)
+DEFAULT:    /tmp/stexamples/jsondatafile.json
+EXAMPLE:    /tmp/stexamples/jsondatafile.json
+-----------------------------------------------------------------
+KEY:        rawdatafile
+DESC:       This option is to process manually (via mitigation) process a
+            rawdatafile with a single rawrecord (for development)
+DEFAULT:    /tmp/stexamples/rawdatafile.json
+EXAMPLE:    /tmp/stexamples/rawdatafile.json
 -----------------------------------------------------------------
 KEY:        jsondatadumpfile
 DESC:       If enabled, mitigated metrics will be dumped to this file.

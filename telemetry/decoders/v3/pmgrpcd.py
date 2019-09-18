@@ -258,6 +258,15 @@ def main():
         help="enable the grpc messages comming from Huawei [default: %default]",
     )
     parser.add_option(
+        "-t",
+        "--cenctype",
+        action="store",
+        type="string",
+        default=config.get("PMGRPCD", "cenctype"),
+        dest="cenctype",
+        help="cenctype is the type of encoding for cisco. This is because some protofiles are incompatible. With cenctype=gpbkv only cisco is enabled. The encoding type can be json, gpbcomp, gpbkv [default: %default]",
+    )
+    parser.add_option(
         "-e",
         "--example",
         action="store_true",
@@ -449,12 +458,15 @@ def serve():
     )
 
     if lib_pmgrpcd.OPTIONS.huawei:
-        PMGRPCDLOG.info("Huawei is enabled")
-        # Ugly, but we have to load just here because if not there is an exception due to a conflict between the cisco and huawei protos.
-        from huawei_pmgrpcd import gRPCDataserviceServicer
-        huawei_grpc_dialout_pb2_grpc.add_gRPCDataserviceServicer_to_server(
-            gRPCDataserviceServicer(), gRPCserver
-        )
+        if lib_pmgrpcd.OPTIONS.cenctype == 'gpbkv':
+            PMGRPCDLOG.info("Huawei is disabled because cenctype=gpbkv")
+        else:
+            PMGRPCDLOG.info("Huawei is enabled")
+            # Ugly, but we have to load just here because if not there is an exception due to a conflict between the cisco and huawei protos.
+            from huawei_pmgrpcd import gRPCDataserviceServicer
+            huawei_grpc_dialout_pb2_grpc.add_gRPCDataserviceServicer_to_server(
+                gRPCDataserviceServicer(), gRPCserver
+            )
     else:
         PMGRPCDLOG.info("Huawei is disabled")
 
