@@ -280,9 +280,9 @@ def main():
     )
     parser.add_option(
         "-r",
-        "--rawdatafile",
-        default=config.get("PMGRPCD", "rawdatafile", fallback=None),
-        dest="rawdatafile",
+        "--rawdatadumpfile",
+        default=config.get("PMGRPCD", "rawdatadumpfile", fallback=None),
+        dest="rawdatadumpfile",
         help="writing the raw data from the routers to the rowdatafile path/name",
     )
     parser.add_option(
@@ -330,6 +330,12 @@ def main():
         "--jsondatafile",
         dest="jsondatafile",
         help="this is to serialize manually with avscid and jsondatafile (for development)",
+    )
+    parser.add_option(
+        "-R",
+        "--rawdatafile",
+        dest="rawdatafile",
+        help="this is to process manually (via mitigation) process a rawdatafile with a single rawrecord (for development)",
     )
     parser.add_option(
         "-N",
