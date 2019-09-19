@@ -296,6 +296,14 @@ def loadavsc(avscid):
 
     return avsc
 
+def delivery_report(err, msg):
+    """ Called once for each message produced to indicate delivery result.
+        Triggered by poll() or flush(). """
+    if err:
+        sys.stderr.write('%% Message failed delivery: %s\n' % err)
+    elif lib_pmgrpcd.OPTIONS.debug:
+        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
+
 
 def serialize(jsondata, topic, avscid, avroinstance):
     lib_pmgrpcd.SERIALIZELOG.debug(
@@ -310,33 +318,37 @@ def serialize(jsondata, topic, avscid, avroinstance):
 
     try:
         # https://github.com/confluentinc/confluent-kafka-python/issues/137
-        result = avroinstance.produce(
-            topic=topic, value=jsondata, key={"schemaid": avscid}
-        )
 
-    # except Exception as e:
+        result = avroinstance.produce(
+            topic=topic, value=jsondata, callback=delivery_report
+        )        
+        avroinstance.poll(0)
+
+        if lib_pmgrpcd.OPTIONS.jsondatafile or lib_pmgrpcd.OPTIONS.rawdatafile:
+            result = avroinstance.flush()
+
     except BufferError as e:
-        # print("[Exception avroinstance.produce]: see serializelog for details\n%s\n%s" % (json.dumps(jsondata, indent=2, sort_keys=True), str(e)))
         print("[Exception avroinstance.produce BufferError]: %s" % (str(e)))
         lib_pmgrpcd.SERIALIZELOG.debug(
             "[Exception avroinstance.produce BufferError]: see serializelog for details\n%s\n%s"
             % (json.dumps(jsondata, indent=2, sort_keys=True), str(e))
-        )
-    except KafkaException as e:
-        print("[Exception avroinstance.produce KafkaException]: %s" % (str(e)))
-        lib_pmgrpcd.SERIALIZELOG.debug(
-            "[Exception avroinstance.produce KafkaException]: see serializelog for details\n%s\n%s"
-            % (json.dumps(jsondata, indent=2, sort_keys=True), str(e))
-        )
+        )    
+        avroinstance.poll(10)
+        result = avroinstance.produce(
+            topic=topic, value=jsondata, key={"schemaid": avscid}, callback=delivery_report
+        )    
     except NotImplementedError as e:
         print("[Exception avroinstance.produce NotImplementedError]: %s" % (str(e)))
         lib_pmgrpcd.SERIALIZELOG.debug(
             "[Exception avroinstance.produce NotImplementedError]: see serializelog for details\n%s\n%s"
             % (json.dumps(jsondata, indent=2, sort_keys=True), str(e))
         )
-    if lib_pmgrpcd.OPTIONS.jsondatafile or lib_pmgrpcd.OPTIONS.rawdatafile:
-        result = avroinstance.flush()
-
+    except Exception as e:
+        print("[Exception avroinstance.produce Exception]: %s" % (str(e)))
+        lib_pmgrpcd.SERIALIZELOG.debug(
+            "[Exception avroinstance.produce Exception]: see serializelog for details\n%s\n%s"
+            % (json.dumps(jsondata, indent=2, sort_keys=True), str(e))
+        )
 
 def manually_serialize():
     PMGRPCDLOG.info(
