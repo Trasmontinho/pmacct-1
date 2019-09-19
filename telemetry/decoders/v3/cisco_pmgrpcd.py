@@ -79,13 +79,6 @@ def cisco_processing(grpcPeer, new_msg):
     PMGRPCDLOG.debug("Cisco: Received GRPC-Data")
     PMGRPCDLOG.debug(new_msg.data)
 
-    # dump the raw data
-    if lib_pmgrpcd.OPTIONS.rawdatafile:
-        PMGRPCDLOG.debug("Write rawdatafile: %s" % (lib_pmgrpcd.OPTIONS.rawdatafile))
-        with open(lib_pmgrpcd.OPTIONS.rawdatafile, "a") as rawdatafile:
-            rawdatafile.write(base64.b64encode(new_msg.data).decode())
-            rawdatafile.write("\n")
-
     # Find the encoding of the packet
     try:
         encoding_type, grpc_message = find_encoding_and_decode(new_msg)
@@ -172,6 +165,14 @@ def cisco_processing(grpcPeer, new_msg):
 
         # allkeys = parse_dict(listelem, ret='', level=0)
         # PMGRPCDLOG.info("Cisco: %s: %s" % (proto, allkeys))
+
+
+        # dump the raw data
+        if lib_pmgrpcd.OPTIONS.rawdatadumpfile:
+            PMGRPCDLOG.debug("Write rawdatadumpfile: %s" % (lib_pmgrpcd.OPTIONS.rawdatadumpfile))
+            with open(lib_pmgrpcd.OPTIONS.rawdatadumpfile, "a") as rawdatadumpfile:
+                 rawdatadumpfile.write(json.dumps(message_dict, indent=2, sort_keys=True))
+                 rawdatadumpfile.write("\n")
 
         try:
             returned = FinalizeTelemetryData(message_dict)

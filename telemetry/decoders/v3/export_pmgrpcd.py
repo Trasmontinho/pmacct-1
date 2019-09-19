@@ -102,11 +102,11 @@ def FinalizeTelemetryData(dictTelemetryData):
     if lib_pmgrpcd.OPTIONS.examplepath and lib_pmgrpcd.OPTIONS.example:
         examples(dictTelemetryData_mod, jsonTelemetryData)
 
-    if lib_pmgrpcd.OPTIONS.jsondatafile:
-        PMGRPCDLOG.debug("Write jsondatafile: %s" % (lib_pmgrpcd.OPTIONS.jsondatafile))
-        with open(lib_pmgrpcd.OPTIONS.jsondatafile, "a") as jsondatafile:
-            jsondatafile.write(jsonTelemetryData)
-            jsondatafile.write("\n")
+    if lib_pmgrpcd.OPTIONS.jsondatadumpfile:
+        PMGRPCDLOG.debug("Write jsondatadumpfile: %s" % (lib_pmgrpcd.OPTIONS.jsondatadumpfile))
+        with open(lib_pmgrpcd.OPTIONS.jsondatadumpfile, "a") as jsondatadumpfile:
+            jsondatadumpfile.write(jsonTelemetryData)
+            jsondatadumpfile.write("\n")
 
     # Filter only config.
     export = True
