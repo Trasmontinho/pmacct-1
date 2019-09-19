@@ -1,7 +1,7 @@
 import export_pmgrpcd
 import lib_pmgrpcd
 from zmq_modules.zmq_exporter import ZmqExporter
-from kafka_modules.kafka_avro_exporter import KafkaAvroExporter, manually_serialize
+from kafka_modules.kafka_avro_exporter import KafkaAvroExporter
 from kafka_modules.kafka_simple_exporter import KafkaExporter
 from file_modules.file_producer import FileExporter
 from lib_pmgrpcd import PMGRPCDLOG

@@ -27,7 +27,7 @@ from file_modules.file_input import FileInput
 from pathlib import Path
 import os
 from gnmi_pmgrpcd import GNMIClient
-
+from kafka_modules.kafka_avro_exporter import manually_serialize
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
