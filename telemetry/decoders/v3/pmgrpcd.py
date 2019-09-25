@@ -27,7 +27,7 @@ from optparse import OptionParser
 import configparser
 import os
 from datetime import datetime
-import sys
+import sys, getopt
 
 # TODO we'll move the next into more appropiate places
 from lib_pmgrpcd import (
