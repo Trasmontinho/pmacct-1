@@ -44,6 +44,7 @@ import signal
 from concurrent import futures
 # gRPC and Protobuf imports
 import grpc
+sys.path.append('./protos/')
 import cisco_grpc_dialout_pb2_grpc
 import huawei_grpc_dialout_pb2_grpc
 import time
