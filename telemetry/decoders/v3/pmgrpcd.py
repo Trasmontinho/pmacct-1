@@ -45,7 +45,7 @@ from concurrent import futures
 # gRPC and Protobuf imports
 import grpc
 #define the directory where the protos are stored
-sys.path.append('./protos/')
+sys.path.append('/opt/collector/pmacct-1.7.3/telemetry/decoders/v3/protos/')
 import cisco_grpc_dialout_pb2_grpc
 import huawei_grpc_dialout_pb2_grpc
 import time
