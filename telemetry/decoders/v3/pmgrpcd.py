@@ -44,6 +44,7 @@ import signal
 from concurrent import futures
 # gRPC and Protobuf imports
 import grpc
+#define the directory where the protos are stored
 sys.path.append('./protos/')
 import cisco_grpc_dialout_pb2_grpc
 import huawei_grpc_dialout_pb2_grpc
